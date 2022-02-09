@@ -7,11 +7,11 @@ namespace AmayaTest
     public class InputManager : MonoBehaviour
     {
         public event Action<Vector3> OnInput;
-        private Camera camera;
+        private Camera _camera;
 
         private void Awake()
         {
-            camera = Camera.main;
+            _camera = Camera.main;
         }
 
         void Update()
@@ -24,7 +24,7 @@ namespace AmayaTest
 
         private Vector3 GetInputPosition()
         {
-            return camera.ScreenToWorldPoint(Input.mousePosition);
+            return _camera.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 }

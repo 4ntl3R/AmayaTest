@@ -1,3 +1,4 @@
+using System;
 using AmayaTest.Data;
 using UnityEngine;
 
@@ -7,6 +8,9 @@ namespace AmayaTest.Grid
     {
         [SerializeField] 
         private Cell _cellPrefab;
+
+        [SerializeField] 
+        private InputManager _input;
         
         private Cell[,] _cells;
         
@@ -23,6 +27,7 @@ namespace AmayaTest.Grid
             _gridHorizontalDist = cellSize.x;
             _gridVerticalDist = cellSize.y;
             _isInited = true;
+            _input.OnInput += GridClicked;
         }
         
 
@@ -72,6 +77,37 @@ namespace AmayaTest.Grid
                 Destroy(cell.gameObject);
             }
 
+            return true;
+        }
+
+        private void OnDestroy()
+        {
+            _input.OnInput -= GridClicked;
+        }
+
+        private void GridClicked(Vector3 clickPosition)
+        {
+            if (TryWorldToCell(clickPosition, out var xIndex, out var yIndex))
+            {
+                var cell = _cells[xIndex, yIndex];
+                cell.Animate();
+            }
+        }
+
+        private bool TryWorldToCell(Vector3 worldCoords, out int horizontalIndex, out int verticalIndex)
+        {
+            var coordsStart = _cells[0, 0].transform.position -
+                              new Vector3(_gridHorizontalDist / 2, _gridVerticalDist / 2);
+            horizontalIndex = (int)Mathf.Floor((worldCoords.x - coordsStart.x)/_gridHorizontalDist);
+            verticalIndex = (int) Mathf.Floor((worldCoords.y - coordsStart.y)/_gridVerticalDist);
+
+            if (horizontalIndex < 0 || verticalIndex < 0)
+                return false;
+            
+            if (horizontalIndex > _stageData.GridData.GetLength(0) ||
+                verticalIndex > _stageData.GridData.GetLength(1))
+                return false;
+            
             return true;
         }
     }
