@@ -15,6 +15,10 @@ namespace AmayaTest
 
         [SerializeField] 
         private GridController _grid;
+        
+        [SerializeField] 
+        private GoalBar _goalUI;
+        
 
         private int _currentStage;
         
@@ -42,6 +46,7 @@ namespace AmayaTest
             }
             
             _grid.SetStage(_gamePlanData.StageData[_currentStage]);
+            _goalUI.SetGoal(_gamePlanData.StageData[_currentStage].AnswerData.Identifier);
             _currentStage++;
         }
 
