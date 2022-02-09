@@ -38,7 +38,7 @@ public class GamePlanFactory
 
         for (var stageIndex = 0; stageIndex < _settings.NumberOfStages; stageIndex++)
         {
-            var answer = possibleAnswers[Random.Range(0, possibleAnswers.Count - 1)];
+            var answer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
             possibleAnswers.Remove(answer);
             
             //Cетка без ответа
@@ -58,12 +58,15 @@ public class GamePlanFactory
     private CardDataBundle GetRandomCardDataBundle()
     {
         if (cardDataBundles.Count <= 0)
-            throw new System.Exception("No Data Bundles for cards found. Maybe you answered a lot of them");
+            throw new Exception("No Data Bundles for cards found. Maybe you answered a lot of them");
 
-        var randomBundle = cardDataBundles[Random.Range(0, cardDataBundles.Count - 1)];
+        var randomBundle = cardDataBundles[Random.Range(0, cardDataBundles.Count)];
 
         if (randomBundle.CardData.Except(answeredCards).Count() < _settings.NumberOfStages)
+        {
+            cardDataBundles.Remove(randomBundle);
             return GetRandomCardDataBundle();
+        }
 
         return randomBundle;
     }
@@ -77,7 +80,7 @@ public class GamePlanFactory
         for (var i = 0; i < gridSize.x; i++)
             for (var j = 0; j < gridSize.y; j++)
             {
-                var randomIndex = Random.Range(0, dataBundle.CardData.Length - 2);
+                var randomIndex = Random.Range(0, dataBundle.CardData.Length - 1);
                 if (randomIndex >= unusedIndex)
                 {
                     randomIndex++;
