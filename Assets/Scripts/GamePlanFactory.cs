@@ -6,78 +6,80 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-[System.Serializable]
-public class GamePlanFactory
+
+namespace AmayaTest
 {
-    [SerializeField] 
-    private List<CardDataBundle> cardDataBundles;
-
-    [SerializeField] 
-    private StagesSettings _settings;
-
-    private List<CardData> answeredCards;
-
-    private bool isInited = false;
-
-    private void Init()
+    [Serializable]
+    public class GamePlanFactory
     {
-        answeredCards = new List<CardData>();
-        isInited = true;
-    }
+        [SerializeField] private List<CardDataBundle> cardDataBundles;
 
-    public GamePlanData GetGamePlan()
-    {
-        if (!isInited)
-            Init();
+        [SerializeField] private StagesSettings _settings;
 
-        var dataBundle = GetRandomCardDataBundle();
+        private List<CardData> _answeredCards;
 
-        var stageData = new StageData[_settings.NumberOfStages];
-        
-        var possibleAnswers = dataBundle.CardData.Except(answeredCards).ToList();
+        private bool _isInited = false;
 
-        for (var stageIndex = 0; stageIndex < _settings.NumberOfStages; stageIndex++)
+        private void Init()
         {
-            var answer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
-            possibleAnswers.Remove(answer);
-            
-            //Cетка без ответа
-            var gridData = GetRandomGridData(answer, _settings.StageSizes[stageIndex], dataBundle);
-
-            //Добавляем 1 ответ в рандомное место
-            var xRandom = Random.Range(0, _settings.StageSizes[stageIndex].x);
-            var yRandom = Random.Range(0, _settings.StageSizes[stageIndex].y);
-            gridData[xRandom, yRandom] = answer;
-
-            stageData[stageIndex] = new StageData(gridData, new IntPairValues(xRandom, yRandom));
+            _answeredCards = new List<CardData>();
+            _isInited = true;
         }
 
-        return new GamePlanData(stageData);
-    }
-
-    private CardDataBundle GetRandomCardDataBundle()
-    {
-        if (cardDataBundles.Count <= 0)
-            throw new Exception("No Data Bundles for cards found. Maybe you answered a lot of them");
-
-        var randomBundle = cardDataBundles[Random.Range(0, cardDataBundles.Count)];
-
-        if (randomBundle.CardData.Except(answeredCards).Count() < _settings.NumberOfStages)
+        public GamePlanData GetGamePlan()
         {
-            cardDataBundles.Remove(randomBundle);
-            return GetRandomCardDataBundle();
+            if (!_isInited)
+                Init();
+
+            var dataBundle = GetRandomCardDataBundle();
+
+            var stageData = new StageData[_settings.NumberOfStages];
+
+            var possibleAnswers = dataBundle.CardData.Except(_answeredCards).ToList();
+
+            for (var stageIndex = 0; stageIndex < _settings.NumberOfStages; stageIndex++)
+            {
+                var answer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
+                possibleAnswers.Remove(answer);
+
+                //Cетка без ответа
+                var gridData = GetRandomGridData(answer, _settings.StageSizes[stageIndex], dataBundle);
+
+                //Добавляем 1 ответ в рандомное место
+                var xRandom = Random.Range(0, _settings.StageSizes[stageIndex].x);
+                var yRandom = Random.Range(0, _settings.StageSizes[stageIndex].y);
+                gridData[xRandom, yRandom] = answer;
+
+                stageData[stageIndex] = new StageData(gridData, new IntPairValues(xRandom, yRandom));
+            }
+
+            return new GamePlanData(stageData);
         }
 
-        return randomBundle;
-    }
+        private CardDataBundle GetRandomCardDataBundle()
+        {
+            if (cardDataBundles.Count <= 0)
+                throw new Exception("No Data Bundles for cards found. Maybe you answered a lot of them");
 
-    private CardData[,] GetRandomGridData(CardData exceptedElement, IntPairValues gridSize, CardDataBundle dataBundle)
-    {
-        var unusedIndex = Array.IndexOf(dataBundle.CardData, exceptedElement);
+            var randomBundle = cardDataBundles[Random.Range(0, cardDataBundles.Count)];
 
-        var returnedValue = new CardData[gridSize.x, gridSize.y];
-        
-        for (var i = 0; i < gridSize.x; i++)
+            if (randomBundle.CardData.Except(_answeredCards).Count() < _settings.NumberOfStages)
+            {
+                cardDataBundles.Remove(randomBundle);
+                return GetRandomCardDataBundle();
+            }
+
+            return randomBundle;
+        }
+
+        private CardData[,] GetRandomGridData(CardData exceptedElement, IntPairValues gridSize,
+            CardDataBundle dataBundle)
+        {
+            var unusedIndex = Array.IndexOf(dataBundle.CardData, exceptedElement);
+
+            var returnedValue = new CardData[gridSize.x, gridSize.y];
+
+            for (var i = 0; i < gridSize.x; i++)
             for (var j = 0; j < gridSize.y; j++)
             {
                 var randomIndex = Random.Range(0, dataBundle.CardData.Length - 1);
@@ -89,6 +91,7 @@ public class GamePlanFactory
                 returnedValue[i, j] = dataBundle.CardData[randomIndex];
             }
 
-        return returnedValue;
+            return returnedValue;
+        }
     }
 }

@@ -1,18 +1,43 @@
 using System;
+using AmayaTest.Data;
+using AmayaTest.Grid;
 using UnityEngine;
 
-public class GamePlanController : MonoBehaviour
+namespace AmayaTest
 {
-    [SerializeField] 
-    private GamePlanFactory _factory;
-
-    private void Start()
+    public class GamePlanController : MonoBehaviour
     {
-        var data = _factory.GetGamePlan();
-        foreach (var stage in data.StageData)
-            foreach (var cell in stage.GridData)
+        [SerializeField] 
+        private GamePlanFactory _factory;
+
+        [SerializeField] 
+        private GridController _grid;
+
+        private int _currentStage;
+        
+        private GamePlanData _gamePlanData;
+
+        private void ResetLevels()
+        {
+            _gamePlanData = _factory.GetGamePlan();
+            _currentStage = 0;
+        }
+
+        private void MoveNextStage()
+        {
+            if (_currentStage >= _gamePlanData.NumberOfStages - 1)
             {
-                Debug.Log(cell.Identifier);
-            }    
+                LevelsEnd();
+                return;
+            }
+            
+            _grid.SetStage(_gamePlanData.StageData[_currentStage]);
+            _currentStage++;
+        }
+
+        private void LevelsEnd()
+        {
+            
+        }
     }
 }
