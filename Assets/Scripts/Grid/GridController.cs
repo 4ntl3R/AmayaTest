@@ -13,6 +13,9 @@ namespace AmayaTest.Grid
 
         [SerializeField] 
         private InputManager _input;
+
+        [SerializeField] 
+        private ParticleSystem _particleSystem;
         
         private Cell[,] _cells;
         
@@ -96,6 +99,8 @@ namespace AmayaTest.Grid
                 {
                     cell.Animate(AnimationType.Bounce);
                     OnRightAnswer?.Invoke();
+                    _particleSystem.transform.position = cell.transform.position;
+                    _particleSystem.Play();
                 }
                 else
                     cell.Animate();
