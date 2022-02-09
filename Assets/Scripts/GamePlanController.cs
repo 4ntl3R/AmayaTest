@@ -17,10 +17,16 @@ namespace AmayaTest
         
         private GamePlanData _gamePlanData;
 
+        private void Awake()
+        {
+            ResetLevels();
+        }
+
         private void ResetLevels()
         {
             _gamePlanData = _factory.GetGamePlan();
             _currentStage = 0;
+            MoveNextStage();
         }
 
         private void MoveNextStage()

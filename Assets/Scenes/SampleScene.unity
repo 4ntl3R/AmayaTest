@@ -215,6 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 910645732}
+  - component: {fileID: 910645733}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -236,3 +237,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &910645733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910645731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b69ca8d00fcb534d8baf5589bd2d069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _factory:
+    cardDataBundles:
+    - {fileID: 11400000, guid: 6e24775da773d244ca912158df413917, type: 2}
+    - {fileID: 11400000, guid: f1a30e2b194683942a0bbfb9d848f904, type: 2}
+    _settings: {fileID: 11400000, guid: e106ca90f44458c48934c90944ea000c, type: 2}
+  _grid: {fileID: 0}
