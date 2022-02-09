@@ -6,6 +6,8 @@ namespace AmayaTest.Grid
 {
     public class GridController : MonoBehaviour
     {
+        public event Action OnRightAnswer;
+        
         [SerializeField] 
         private Cell _cellPrefab;
 
@@ -90,7 +92,13 @@ namespace AmayaTest.Grid
             if (TryWorldToCell(clickPosition, out var xIndex, out var yIndex))
             {
                 var cell = _cells[xIndex, yIndex];
-                cell.Animate();
+                if (xIndex == _stageData.AnswerIndex.x && yIndex == _stageData.AnswerIndex.y)
+                {
+                    cell.Animate(AnimationType.Bounce);
+                    OnRightAnswer?.Invoke();
+                }
+                else
+                    cell.Animate();
             }
         }
 
