@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using AmayaTest.Data;
 using AmayaTest.Grid;
+using AmayaTest.UI;
 using UnityEngine;
 
 namespace AmayaTest
@@ -19,6 +20,12 @@ namespace AmayaTest
         [SerializeField] 
         private GoalBar _goalUI;
         
+        [SerializeField] 
+        private RestartScreenController _restartUI;
+
+        [SerializeField] 
+        private InputManager _input;
+        
 
         private int _currentStage;
         
@@ -30,12 +37,14 @@ namespace AmayaTest
             _grid.OnRightAnswer += GetRightAnswer;
         }
 
-        private void ResetLevels()
+        public void ResetLevels()
         {
             _gamePlanData = _factory.GetGamePlan();
             _currentStage = 0;
             MoveNextStage(true);
             _goalUI.FadeFromOpaque();
+            _restartUI.TurnOff();
+            _input.TurnOn();
         }
 
         private void MoveNextStage(bool isStageFirst = false)
@@ -52,7 +61,8 @@ namespace AmayaTest
 
         private void LevelsEnd()
         {
-            Debug.Log("REstart");
+            _restartUI.TurnOn();
+            _input.TurnOff();
         }
 
         private void OnDestroy()

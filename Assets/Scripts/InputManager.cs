@@ -15,10 +15,9 @@ namespace AmayaTest
         private void Awake()
         {
             _camera = Camera.main;
-            TurnOn();
         }
 
-        private void TurnOn()
+        public void TurnOn()
         {
             if (_isTurnedOn)
                 return;
@@ -27,7 +26,7 @@ namespace AmayaTest
             StartCoroutine(InputProcess());
         }
 
-        private void TurnOff()
+        public void TurnOff()
         {
             if (!_isTurnedOn)
                 return;
