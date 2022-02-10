@@ -10,6 +10,7 @@ namespace AmayaTest
     public class GamePlanController : MonoBehaviour
     {
         [SerializeField] private float nextStageDelay = 1f;
+        [SerializeField] private float inputDelay = 0.5f;
         
         [SerializeField] 
         private GamePlanFactory _factory;
@@ -44,7 +45,7 @@ namespace AmayaTest
             MoveNextStage(true);
             _goalUI.FadeFromOpaque();
             _restartUI.TurnOff();
-            _input.TurnOn();
+            StartCoroutine(DelayedInputTurn());
         }
 
         private void MoveNextStage(bool isStageFirst = false)
@@ -54,6 +55,8 @@ namespace AmayaTest
                 LevelsEnd();
                 return;
             }
+
+            StartCoroutine(DelayedInputTurn());
             _grid.SetStage(_gamePlanData.StageData[_currentStage], isStageFirst);
             _goalUI.SetGoal(_gamePlanData.StageData[_currentStage].AnswerData.Identifier);
             _currentStage++;
@@ -61,8 +64,8 @@ namespace AmayaTest
 
         private void LevelsEnd()
         {
-            _restartUI.TurnOn();
             _input.TurnOff();
+            _restartUI.TurnOn();
         }
 
         private void OnDestroy()
@@ -77,8 +80,15 @@ namespace AmayaTest
 
         IEnumerator DelayedNextStage()
         {
+            _input.TurnOff();
             yield return new WaitForSeconds(nextStageDelay);
-            MoveNextStage();
+            MoveNextStage(); ;
+        }
+        
+        IEnumerator DelayedInputTurn()
+        {
+            yield return new WaitForSeconds(inputDelay);
+            _input.TurnOn();
         }
     }
 }

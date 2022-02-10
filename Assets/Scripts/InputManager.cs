@@ -7,10 +7,15 @@ namespace AmayaTest
     public class InputManager : MonoBehaviour
     {
         public event Action<Vector3> OnInput;
+
+        [SerializeField] 
+        private float clickDeltaTime = 0.5f;
         
         private Camera _camera;
 
         private bool _isTurnedOn = false;
+
+        private float lastClick = 0f;
 
         private void Awake()
         {
@@ -21,7 +26,7 @@ namespace AmayaTest
         {
             if (_isTurnedOn)
                 return;
-            
+
             _isTurnedOn = true;
             StartCoroutine(InputProcess());
         }
@@ -30,7 +35,7 @@ namespace AmayaTest
         {
             if (!_isTurnedOn)
                 return;
-            
+
             _isTurnedOn = false;
             StopCoroutine(InputProcess());
         }
@@ -39,11 +44,11 @@ namespace AmayaTest
         {
             while (_isTurnedOn)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && (Time.realtimeSinceStartup - lastClick > clickDeltaTime))
                 {
                     OnInput?.Invoke(GetInputPosition());
+                    lastClick = Time.realtimeSinceStartup;
                 }
-
                 yield return null;
             }
         }

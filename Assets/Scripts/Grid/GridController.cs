@@ -60,7 +60,7 @@ namespace AmayaTest.Grid
                     var coords = GetCellPosition(i, j, xSize, ySize);
                     var cellGameObject = Instantiate(_cellPrefab.gameObject, coords, Quaternion.identity, transform);
                     var cell = cellGameObject.GetComponent<Cell>();
-                    cell.SetCell(_stageData.GridData[i, j].Sprite);
+                    cell.SetCell(_stageData.GridData[i, j].Sprite, _stageData.GridData[i,j].Rotation);
                     _cells[i, j] = cell;
                 }
 
@@ -126,8 +126,8 @@ namespace AmayaTest.Grid
             if (horizontalIndex < 0 || verticalIndex < 0)
                 return false;
             
-            if (horizontalIndex > _stageData.GridData.GetLength(0) ||
-                verticalIndex > _stageData.GridData.GetLength(1))
+            if (horizontalIndex >= _stageData.GridData.GetLength(0) ||
+                verticalIndex >= _stageData.GridData.GetLength(1))
                 return false;
             
             return true;

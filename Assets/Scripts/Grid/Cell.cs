@@ -26,9 +26,10 @@ namespace AmayaTest.Grid
 
         private float lastAnimationStart = -ANIMATION_DURATION;
 
-        public void SetCell(Sprite sprite)
+        public void SetCell(Sprite sprite, Vector3 rot)
         {
             _visualsRenderer.sprite = sprite;
+            _visualsRenderer.transform.rotation = Quaternion.Euler(rot);
         }
 
         public void CellAnimate()
