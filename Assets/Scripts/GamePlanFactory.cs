@@ -15,7 +15,7 @@ namespace AmayaTest
         [SerializeField] private List<CardDataBundle> cardDataBundles;
 
         [SerializeField] private StagesSettings _settings;
-
+        
         private List<CardData> _answeredCards;
 
         private bool _isInited = false;
@@ -41,6 +41,7 @@ namespace AmayaTest
             {
                 var answer = possibleAnswers[Random.Range(0, possibleAnswers.Count)];
                 possibleAnswers.Remove(answer);
+                _answeredCards.Add(answer);
 
                 //Cетка без ответа
                 var gridData = GetRandomGridData(answer, _settings.StageSizes[stageIndex], dataBundle);

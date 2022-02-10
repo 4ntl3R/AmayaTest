@@ -11,6 +11,11 @@ namespace AmayaTest.Data
         [SerializeField] 
         private Sprite _sprite;
 
+        [SerializeField] 
+        private Vector3 rotation = Quaternion.identity.eulerAngles;
+
+        public Vector3 Rotation => rotation;
+
         public string Identifier => _identifier;
 
         public Sprite Sprite => _sprite;
