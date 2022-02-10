@@ -12,13 +12,13 @@ namespace AmayaTest.Grid
     
     public class Cell : MonoBehaviour
     {
-        public const float ANIMATION_DURATION = 0.5f;
-        public const float BOUNCE_SCALE = 0.25f;
-        public const int BOUNCE_VIBRATIO = 10;
-        public const float BOUNCE_ELASTICITY = 1f;
-        public const float SHAKE_SCALE = 1f;
-        public const int SHAKE_VIBRATIO = 10;
-        public const float SHAKE_RANDOMNESS = 45f;
+        private const float ANIMATION_DURATION = 0.5f;
+        private const float BOUNCE_SCALE = 0.25f;
+        private const int BOUNCE_VIBRATIO = 10;
+        private const float BOUNCE_ELASTICITY = 1f;
+        private const float SHAKE_SCALE = 1f;
+        private const int SHAKE_VIBRATIO = 10;
+        private const float SHAKE_RANDOMNESS = 10f;
 
 
         [SerializeField] 
@@ -30,7 +30,11 @@ namespace AmayaTest.Grid
         {
             _visualsRenderer.sprite = sprite;
         }
-        
+
+        public void CellAnimate()
+        {
+            transform.DOPunchScale(new Vector3(BOUNCE_SCALE, BOUNCE_SCALE), ANIMATION_DURATION, BOUNCE_VIBRATIO, BOUNCE_ELASTICITY);
+        }
 
         public void Animate(AnimationType animationType = AnimationType.Shake)
         {

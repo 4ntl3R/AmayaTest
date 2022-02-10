@@ -34,18 +34,18 @@ namespace AmayaTest
         {
             _gamePlanData = _factory.GetGamePlan();
             _currentStage = 0;
-            MoveNextStage();
+            MoveNextStage(true);
+            _goalUI.FadeFromOpaque();
         }
 
-        private void MoveNextStage()
+        private void MoveNextStage(bool isStageFirst = false)
         {
             if (_currentStage > _gamePlanData.NumberOfStages - 1)
             {
                 LevelsEnd();
                 return;
             }
-            
-            _grid.SetStage(_gamePlanData.StageData[_currentStage]);
+            _grid.SetStage(_gamePlanData.StageData[_currentStage], isStageFirst);
             _goalUI.SetGoal(_gamePlanData.StageData[_currentStage].AnswerData.Identifier);
             _currentStage++;
         }

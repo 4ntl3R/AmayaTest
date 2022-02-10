@@ -36,17 +36,17 @@ namespace AmayaTest.Grid
         }
         
 
-        public void SetStage(StageData newStage)
+        public void SetStage(StageData newStage, bool animateGrid = false)
         {
             if (!_isInited)
             {
                 Init();
             }
             _stageData = newStage;
-            DrawStage();
+            DrawStage(animateGrid);
         }
 
-        private void DrawStage()
+        private void DrawStage(bool animateGrid)
         {
             TryClearGrid();
             
@@ -62,6 +62,15 @@ namespace AmayaTest.Grid
                     var cell = cellGameObject.GetComponent<Cell>();
                     cell.SetCell(_stageData.GridData[i, j].Sprite);
                     _cells[i, j] = cell;
+                }
+
+            if (!animateGrid)
+                return;
+            
+            for (var i = 0; i < xSize; i++)
+                for (int j = 0; j < ySize; j++)
+                {
+                    _cells[i, j].CellAnimate();
                 }
         }
 
